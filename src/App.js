@@ -9,6 +9,8 @@ function App() {
         <div className="container">
             <WarningSign text="Warning!!!" />
             <MyBadge variant="danger" text="Danger badge" />
+            <MyBadge variant="success" text="Success badge" />
+            <MyBadge variant="warning" text="Warning badge" />
             <BookList books={books} />
         </div>
     );

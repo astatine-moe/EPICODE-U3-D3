@@ -8,7 +8,13 @@ class SingleBook extends React.Component {
     render() {
         return (
             <Card
-                style={this.state.selected ? { border: "3px solid green" } : {}}
+                style={
+                    this.state.selected
+                        ? {
+                              "box-shadow": "0 0 50px 15px green",
+                          }
+                        : {}
+                }
                 onClick={(e) => {
                     this.setState({
                         selected: !this.state.selected,
