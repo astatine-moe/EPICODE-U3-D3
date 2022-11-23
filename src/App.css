@@ -1,5 +1,7 @@
 body {
     margin-top: 1em;
+    background-color: #0f0f0f;
+    color: white;
 }
 input {
     margin-top: 1em;
@@ -7,4 +9,8 @@ input {
 }
 .badge {
     margin-right: 0.5em;
+}
+
+.card img {
+    aspect-ratio: 3/5;
 }

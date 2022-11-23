@@ -21,7 +21,7 @@ class BookList extends React.Component {
                         });
                     }}
                 />
-                <Row xs={2} md={4} className="g-4">
+                <Row xs={2} md={5} className="g-4">
                     {this.props.books
                         .filter((book) =>
                             book.title

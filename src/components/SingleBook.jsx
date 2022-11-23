@@ -11,7 +11,7 @@ class SingleBook extends React.Component {
                 style={
                     this.state.selected
                         ? {
-                              "box-shadow": "0 0 50px 15px green",
+                              "box-shadow": "0 0 50px 15px #28A745",
                           }
                         : {}
                 }
@@ -20,13 +20,11 @@ class SingleBook extends React.Component {
                         selected: !this.state.selected,
                     });
                 }}
+                bg="dark"
             >
                 <Card.Img variant="top" src={this.props.book.img} />
                 <Card.Body>
-                    <Card.Title>
-                        {this.state.selected ? "Selected: " : ""}
-                        {this.props.book.title}
-                    </Card.Title>
+                    <Card.Title>{this.props.book.title}</Card.Title>
                 </Card.Body>
             </Card>
         );
