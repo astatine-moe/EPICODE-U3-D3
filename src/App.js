@@ -7,7 +7,7 @@ import books from "./horror.json";
 function App() {
     return (
         <div className="container">
-            <WarningSign text="Warning" />
+            <WarningSign text="Warning!!!" />
             <MyBadge variant="danger" text="Danger badge" />
             <BookList books={books} />
         </div>

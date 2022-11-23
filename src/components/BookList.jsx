@@ -24,7 +24,9 @@ class BookList extends React.Component {
                 <Row xs={2} md={4} className="g-4">
                     {this.props.books
                         .filter((book) =>
-                            book.title.toLowerCase().includes(this.state.search)
+                            book.title
+                                .toLowerCase()
+                                .includes(this.state.search.toLowerCase())
                         )
                         .map((book, i) => (
                             <Col>
