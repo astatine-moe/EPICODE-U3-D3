@@ -21,15 +21,16 @@ class BookList extends React.Component {
                         });
                     }}
                 />
-                <Row xs={2} md={5} className="g-4">
+                <Row xs={2} md={4} className="g-4">
                     {this.props.books
+                        .slice(0, 20)
                         .filter((book) =>
                             book.title
                                 .toLowerCase()
                                 .includes(this.state.search.toLowerCase())
                         )
                         .map((book, i) => (
-                            <Col>
+                            <Col key={book.asin}>
                                 <SingleBook book={book} />
                             </Col>
                         ))}

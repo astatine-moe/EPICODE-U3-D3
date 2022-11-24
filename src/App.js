@@ -6,7 +6,7 @@ import books from "./horror.json";
 
 function App() {
     return (
-        <div className="container">
+        <div className="container-fluid">
             <WarningSign text="Warning!!!" />
             <MyBadge variant="danger" text="Danger badge" />
             <MyBadge variant="success" text="Success badge" />
