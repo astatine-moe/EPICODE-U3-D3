@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Col } from "react-bootstrap";
 
 let uri = `https://striveschool-api.herokuapp.com/api/comments/`;
-const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZjZjc2ZmQ0YmUzZDAwMTU4NDYwMTQiLCJpYXQiOjE2NjgwODU2MTUsImV4cCI6MTY2OTI5NTIxNX0.kb8Xdym3g7w_VaHUzUWEl2EUqrVgOn9acXC5vZbUAiM`;
+const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZjZjc2ZmQ0YmUzZDAwMTU4NDYwMTQiLCJpYXQiOjE2NjkyOTc4NDMsImV4cCI6MTY3MDUwNzQ0M30.YX8IkylxvRr8RSZhmVAHJyyJ3Onl4Koa4jmZbQGKrHg`;
 const opts = {
     headers: {
         Authorization: `Bearer ${token}`,
@@ -11,7 +11,7 @@ const opts = {
 
 class AddComment extends React.Component {
     state = {
-        email: "",
+        rating: "1",
         text: "",
     };
 
@@ -19,16 +19,56 @@ class AddComment extends React.Component {
 
     render() {
         return (
-            <Form>
+            <Form
+                onSubmit={async (e) => {
+                    e.preventDefault();
+
+                    let response = await fetch(uri, {
+                        headers: {
+                            ...opts.headers,
+                            "Content-Type": "application/json",
+                        },
+                        method: "POST",
+                        body: JSON.stringify({
+                            comment: this.state.text,
+                            rate: this.state.rating,
+                            elementId: this.props.asin,
+                        }),
+                    });
+
+                    if (response.ok) {
+                        //OK!
+                        this.props.fetchComments(this.props.asin);
+                    } else {
+                        console.log("Error posting comment");
+                    }
+                }}
+            >
                 <Form.Row>
                     <Form.Group as={Col} controlId="formGridComment">
                         <Form.Label>Comment</Form.Label>
-                        <Form.Control />
+                        <Form.Control
+                            onChange={(e) => {
+                                this.setState({
+                                    ...this.state,
+                                    text: e.target.value,
+                                });
+                            }}
+                        />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formGridRating">
                         <Form.Label>Rating</Form.Label>
-                        <Form.Control as="select" defaultValue="Choose...">
+                        <Form.Control
+                            as="select"
+                            defaultValue="Choose..."
+                            onChange={(e) => {
+                                this.setState({
+                                    ...this.state,
+                                    rating: e.target.value,
+                                });
+                            }}
+                        >
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>

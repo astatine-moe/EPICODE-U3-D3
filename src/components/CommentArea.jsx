@@ -58,7 +58,10 @@ class CommentArea extends React.Component {
 
                 {!this.state.isLoading && !this.state.error && (
                     <>
-                        <AddComment />
+                        <AddComment
+                            fetchComments={this.fetchComments}
+                            asin={this.props.asin}
+                        />
                         <p>Comments</p>
                         <ListGroup variant="flush">
                             {this.state.comments.map((comment, i) => (
