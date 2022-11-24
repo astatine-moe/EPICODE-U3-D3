@@ -15,6 +15,8 @@ class AddComment extends React.Component {
         text: "",
     };
 
+    async addComment() {}
+
     render() {
         return (
             <Form>
