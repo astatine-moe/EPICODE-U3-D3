@@ -64,9 +64,13 @@ class CommentArea extends React.Component {
                         />
                         <p>Comments</p>
                         <ListGroup variant="flush">
-                            {this.state.comments.map((comment, i) => (
-                                <SingleComment comment={comment} />
-                            ))}
+                            {this.state.comments.length ? (
+                                this.state.comments.map((comment, i) => (
+                                    <SingleComment comment={comment} />
+                                ))
+                            ) : (
+                                <p>No comments found</p>
+                            )}
                         </ListGroup>
                     </>
                 )}

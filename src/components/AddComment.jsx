@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Col } from "react-bootstrap";
+import { Form, Col, Button } from "react-bootstrap";
 
 let uri = `https://striveschool-api.herokuapp.com/api/comments/`;
 const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzZjZjc2ZmQ0YmUzZDAwMTU4NDYwMTQiLCJpYXQiOjE2NjkyOTc4NDMsImV4cCI6MTY3MDUwNzQ0M30.YX8IkylxvRr8RSZhmVAHJyyJ3Onl4Koa4jmZbQGKrHg`;
@@ -39,15 +39,20 @@ class AddComment extends React.Component {
                     if (response.ok) {
                         //OK!
                         this.props.fetchComments(this.props.asin);
+                        this.setState({
+                            ...this.state,
+                            text: "",
+                        });
                     } else {
                         console.log("Error posting comment");
                     }
                 }}
             >
                 <Form.Row>
-                    <Form.Group as={Col} controlId="formGridComment">
+                    <Form.Group as={Col} xs={12} controlId="formGridComment">
                         <Form.Label>Comment</Form.Label>
                         <Form.Control
+                            value={this.state.text}
                             onChange={(e) => {
                                 this.setState({
                                     ...this.state,
@@ -77,6 +82,8 @@ class AddComment extends React.Component {
                         </Form.Control>
                     </Form.Group>
                 </Form.Row>
+                <button type="submit">Submit</button>
+                <hr />
             </Form>
         );
     }
