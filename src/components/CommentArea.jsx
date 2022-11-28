@@ -18,37 +18,56 @@ class CommentArea extends React.Component {
         isLoading: true,
     };
 
-    fetchComments = async (bookId) => {
-        try {
-            let response = await fetch(uri + bookId, opts);
+    fetchComments = async () => {
+        this.setState({
+            ...this.state,
+            isLoading: false,
+            error: "",
+        });
+        if (this.props.book) {
+            try {
+                let response = await fetch(uri + this.props.book, opts);
 
-            if (response.ok) {
-                let data = await response.json();
+                if (response.ok) {
+                    let data = await response.json();
 
+                    this.setState({
+                        ...this.state,
+                        comments: data,
+                        isLoading: false,
+                    });
+                } else {
+                    this.setState({
+                        ...this.state,
+                        error: "Error fetching comments",
+                        isLoading: false,
+                    });
+                }
+            } catch (e) {
                 this.setState({
                     ...this.state,
-                    comments: data,
-                    isLoading: false,
-                });
-            } else {
-                this.setState({
-                    ...this.state,
-                    error: "Error fetching comments",
+                    error: JSON.stringify(e),
                     isLoading: false,
                 });
             }
-        } catch (e) {
+        } else {
             this.setState({
                 ...this.state,
-                error: JSON.stringify(e),
+                error: "No book selected",
                 isLoading: false,
             });
         }
     };
 
     componentDidMount() {
-        this.fetchComments(this.props.asin);
+        this.fetchComments();
     }
+
+    componentDidUpdate = (prevProps, prevState) => {
+        if (prevProps.book !== this.props.book) {
+            this.fetchComments();
+        }
+    };
 
     render() {
         return (
@@ -60,7 +79,7 @@ class CommentArea extends React.Component {
                     <>
                         <AddComment
                             fetchComments={this.fetchComments}
-                            asin={this.props.asin}
+                            asin={this.props.book}
                         />
                         <p>Comments</p>
                         <ListGroup variant="flush">

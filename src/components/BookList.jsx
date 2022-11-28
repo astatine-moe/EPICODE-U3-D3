@@ -21,7 +21,8 @@ class BookList extends React.Component {
                         });
                     }}
                 />
-                <Row xs={2} md={4} className="g-4">
+                {/* Show 6 books when no book selected, 4 when book is selected */}
+                <Row xs={2} md={this.props.selected ? 4 : 6} className="g-4">
                     {this.props.books
                         .slice(0, 20)
                         .filter((book) =>
@@ -31,7 +32,11 @@ class BookList extends React.Component {
                         )
                         .map((book, i) => (
                             <Col key={book.asin}>
-                                <SingleBook book={book} />
+                                <SingleBook
+                                    book={book}
+                                    setSelected={this.props.setSelected}
+                                    selected={this.props.selected === book.asin}
+                                />
                             </Col>
                         ))}
                 </Row>
