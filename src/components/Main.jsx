@@ -1,37 +1,28 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Row, Col } from "react-bootstrap";
 import CommentArea from "./CommentArea";
 import BookList from "./BookList";
 import books from "../horror.json";
-class Main extends React.Component {
-    state = {
-        selected: null,
-    };
 
-    setSelected = (asin) => {
-        this.setState({
-            selected: asin,
-        });
-    };
+const Main = (props) => {
+    const [selected, setSelected] = useState(null);
 
-    render() {
-        return (
-            <Row>
+    return (
+        <Row>
+            <Col>
+                <BookList
+                    selected={selected}
+                    books={books}
+                    setSelected={setSelected}
+                />
+            </Col>
+            {selected && (
                 <Col>
-                    <BookList
-                        selected={this.state.selected}
-                        books={books}
-                        setSelected={this.setSelected}
-                    />
+                    <CommentArea book={selected} />
                 </Col>
-                {this.state.selected && (
-                    <Col>
-                        <CommentArea book={this.state.selected} />
-                    </Col>
-                )}
-            </Row>
-        );
-    }
-}
+            )}
+        </Row>
+    );
+};
 
 export default Main;
