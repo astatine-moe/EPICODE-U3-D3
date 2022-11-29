@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import CommentArea from "./CommentArea";
 import BookList from "./BookList";

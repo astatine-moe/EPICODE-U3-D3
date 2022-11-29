@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ListGroup, Spinner, Button, Alert } from "react-bootstrap";
+import { ListGroup, Spinner, Alert } from "react-bootstrap";
 import SingleComment from "./SingleComment";
 import AddComment from "./AddComment";
 
