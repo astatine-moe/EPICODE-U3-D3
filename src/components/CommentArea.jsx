@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ListGroup, Spinner, Button, Alert } from "react-bootstrap";
 import SingleComment from "./SingleComment";
 import AddComment from "./AddComment";
@@ -11,95 +11,84 @@ const opts = {
     },
 };
 
-class CommentArea extends React.Component {
-    state = {
-        comments: [],
-        error: "",
-        isLoading: true,
-    };
+function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value;
+    });
+    return ref.current;
+}
 
-    fetchComments = async () => {
-        this.setState({
-            ...this.state,
-            isLoading: false,
-            error: "",
-        });
-        if (this.props.book) {
+const CommentArea = (props) => {
+    const [comments, setComments] = useState([]);
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+    const prevBook = usePrevious(props.book);
+
+    const fetchComments = async () => {
+        setIsLoading(true);
+        if (props.book) {
             try {
-                let response = await fetch(uri + this.props.book, opts);
+                let response = await fetch(uri + props.book, opts);
 
                 if (response.ok) {
                     let data = await response.json();
 
-                    this.setState({
-                        ...this.state,
-                        comments: data,
-                        isLoading: false,
-                    });
+                    setIsLoading(false);
+                    setComments(data);
                 } else {
-                    this.setState({
-                        ...this.state,
-                        error: "Error fetching comments",
-                        isLoading: false,
-                    });
+                    setIsLoading(false);
+                    setError("Error fetching comments");
                 }
             } catch (e) {
-                this.setState({
-                    ...this.state,
-                    error: JSON.stringify(e),
-                    isLoading: false,
-                });
+                setIsLoading(false);
+                setError(JSON.stringify(e));
             }
         } else {
-            this.setState({
-                ...this.state,
-                error: "No book selected",
-                isLoading: false,
-            });
+            setIsLoading(false);
+            setError("No book selected");
         }
     };
 
-    componentDidMount() {
-        this.fetchComments();
-    }
+    useEffect(() => {
+        //componentDidMount
+        fetchComments();
+    }, []);
 
-    componentDidUpdate = (prevProps, prevState) => {
-        if (prevProps.book !== this.props.book) {
-            this.fetchComments();
+    useEffect(() => {
+        //componentDidUpdate
+        if (prevBook !== props.book) {
+            fetchComments();
         }
-    };
+    });
 
-    render() {
-        return (
-            <>
-                <hr />
-                {this.state.isLoading && <Spinner animation="grow" />}
+    return (
+        <>
+            <hr />
+            {isLoading && <Spinner animation="grow" />}
 
-                {!this.state.isLoading && !this.state.error && (
-                    <>
-                        <AddComment
-                            fetchComments={this.fetchComments}
-                            asin={this.props.book}
-                        />
-                        <p>Comments</p>
-                        <ListGroup variant="flush">
-                            {this.state.comments.length ? (
-                                this.state.comments.map((comment, i) => (
-                                    <SingleComment comment={comment} />
-                                ))
-                            ) : (
-                                <p>No comments found</p>
-                            )}
-                        </ListGroup>
-                    </>
-                )}
+            {!isLoading && !error && (
+                <>
+                    <AddComment
+                        fetchComments={fetchComments}
+                        asin={props.book}
+                    />
+                    <p>Comments</p>
+                    <ListGroup variant="flush">
+                        {comments.length ? (
+                            comments.map((comment, i) => (
+                                <SingleComment comment={comment} />
+                            ))
+                        ) : (
+                            <p>No comments found</p>
+                        )}
+                    </ListGroup>
+                </>
+            )}
 
-                {this.state.error && (
-                    <Alert variant="danger">{this.state.error}</Alert>
-                )}
-            </>
-        );
-    }
-}
+            {error && <Alert variant="danger">{error}</Alert>}
+        </>
+    );
+};
 
 export default CommentArea;
